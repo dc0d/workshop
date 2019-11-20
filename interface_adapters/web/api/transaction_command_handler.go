@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/model"
 )
 
 type transactionCommandHandler struct {

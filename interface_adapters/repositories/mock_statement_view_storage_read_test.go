@@ -4,8 +4,8 @@
 package repositories_test
 
 import (
-	"gitlab.com/dc0d/go-workshop/interface_adapters/repositories"
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/interface_adapters/repositories"
+	"github.com/dc0d/workshop/model"
 	"sync"
 )
 

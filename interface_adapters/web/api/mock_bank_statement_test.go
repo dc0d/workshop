@@ -6,7 +6,7 @@ package api
 
 import (
 	gomock "github.com/golang/mock/gomock"
-	model "gitlab.com/dc0d/go-workshop/model"
+	model "github.com/dc0d/workshop/model"
 	reflect "reflect"
 )
 

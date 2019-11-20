@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/model"
 
 	"github.com/stretchr/testify/require"
 )

@@ -1,6 +1,6 @@
 package infrastructure
 
-import "gitlab.com/dc0d/go-workshop/model"
+import "github.com/dc0d/workshop/model"
 
 // QueueEventPublisher .
 type QueueEventPublisher struct {

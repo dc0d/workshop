@@ -6,7 +6,7 @@ import (
 	"io"
 	"time"
 
-	"gitlab.com/dc0d/go-workshop/external_interfaces/delivery/server"
+	"github.com/dc0d/workshop/external_interfaces/delivery/server"
 )
 
 func startServer() {

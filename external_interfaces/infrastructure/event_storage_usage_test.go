@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"gitlab.com/dc0d/go-workshop/external_interfaces/infrastructure"
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/external_interfaces/infrastructure"
+	"github.com/dc0d/workshop/model"
 
 	"github.com/stretchr/testify/require"
 )

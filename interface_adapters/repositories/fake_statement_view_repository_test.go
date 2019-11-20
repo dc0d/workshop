@@ -5,8 +5,8 @@ package repositories_test
 import (
 	"testing"
 
-	"gitlab.com/dc0d/go-workshop/interface_adapters/repositories"
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/interface_adapters/repositories"
+	"github.com/dc0d/workshop/model"
 
 	"github.com/stretchr/testify/require"
 )

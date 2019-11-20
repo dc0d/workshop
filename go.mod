@@ -1,4 +1,4 @@
-module gitlab.com/dc0d/go-workshop
+module github.com/dc0d/workshop
 
 go 1.13
 

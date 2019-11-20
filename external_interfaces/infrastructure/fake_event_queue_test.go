@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
-	"gitlab.com/dc0d/go-workshop/external_interfaces/infrastructure"
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/external_interfaces/infrastructure"
+	"github.com/dc0d/workshop/model"
 )
 
 func Test_create_fake_event_queue(t *testing.T) {

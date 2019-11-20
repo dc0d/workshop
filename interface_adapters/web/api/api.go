@@ -1,10 +1,8 @@
 package api
 
 import (
-	"gitlab.com/dc0d/go-workshop/external_interfaces/infrastructure"
-	"gitlab.com/dc0d/go-workshop/interface_adapters/repositories"
-	"gitlab.com/dc0d/go-workshop/model"
-	"gitlab.com/dc0d/go-workshop/usecases"
+	"github.com/dc0d/workshop/model"
+	"github.com/dc0d/workshop/usecases"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -12,8 +10,10 @@ import (
 )
 
 // NewRouter .
-func NewRouter() *echo.Echo {
-	return newRouter(newDefaultHandlerFactory())
+func NewRouter(
+	accountRepositoryFactory model.AccountRepositoryFactory,
+	statementViewRepositoryFactory model.StatementViewRepositoryFactory) *echo.Echo {
+	return newRouter(newDefaultHandlerFactory(accountRepositoryFactory, statementViewRepositoryFactory))
 }
 
 func newRouter(handlerFactory handlerFactory) *echo.Echo {
@@ -43,40 +43,28 @@ type handlerFactory interface {
 	createStatementHandler() *statementHandler
 }
 
-type defaultHandlerFactory struct{}
+type defaultHandlerFactory struct {
+	accountRepositoryFactory       model.AccountRepositoryFactory
+	statementViewRepositoryFactory model.StatementViewRepositoryFactory
+}
 
-func newDefaultHandlerFactory() *defaultHandlerFactory { return &defaultHandlerFactory{} }
+func newDefaultHandlerFactory(
+	accountRepositoryFactory model.AccountRepositoryFactory,
+	statementViewRepositoryFactory model.StatementViewRepositoryFactory) *defaultHandlerFactory {
+	return &defaultHandlerFactory{
+		accountRepositoryFactory:       accountRepositoryFactory,
+		statementViewRepositoryFactory: statementViewRepositoryFactory,
+	}
+}
 
-func (*defaultHandlerFactory) createTransactionCommandHandler() *transactionCommandHandler {
-	repo := createAccountRepository()
+func (factory *defaultHandlerFactory) createTransactionCommandHandler() *transactionCommandHandler {
+	repo := factory.accountRepositoryFactory.CreateAccountRepository()
 	usecase := usecases.NewHandleTransaction(repo)
 	return newTransactionCommandHandler(usecase)
 }
 
-func (*defaultHandlerFactory) createStatementHandler() *statementHandler {
-	repo := createStatementViewRepository()
+func (factory *defaultHandlerFactory) createStatementHandler() *statementHandler {
+	repo := factory.statementViewRepositoryFactory.CreateStatementViewRepository()
 	usecase := usecases.NewBankStatement(repo)
 	return newStatementHandler(usecase)
 }
-
-func createStatementViewRepository() model.StatementViewRepository {
-	return _statementRepo
-}
-
-func createAccountRepository() model.AccountRepository {
-	return _accountRepo
-}
-
-var (
-	_statementRepo = repositories.NewStatementViewRepository(_statementViewStorage)
-	_accountRepo   = repositories.NewAccountRepository(_eventStore, _timeSource)
-	_timeSource    = repositories.NewTimeSource()
-	_eventStore    = repositories.NewEventStore(_storage, _publisher)
-	_publisher     = infrastructure.NewQueueEventPublisher(_queue)
-
-	_queue   = infrastructure.NewFakeEventQueue()
-	_storage = infrastructure.NewEventStorage()
-
-	_statementViewBuilder = infrastructure.NewStatementViewBuilder(_queue, _statementViewStorage)
-	_statementViewStorage = infrastructure.NewStatementViewStorage()
-)

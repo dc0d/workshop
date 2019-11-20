@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/model"
 )
 
 func Test_sortable_events(t *testing.T) {

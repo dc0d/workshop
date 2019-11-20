@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	model "gitlab.com/dc0d/go-workshop/model"
+	model "github.com/dc0d/workshop/model"
 )
 
 // MockEventStore is a mock of EventStore interface

@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/model"
 
 	gomock "github.com/golang/mock/gomock"
 	"github.com/labstack/echo"
@@ -77,6 +77,14 @@ func Test_bank_statement_using_the_router(t *testing.T) {
 
 	assert.Equal(http.StatusOK, rec.Code)
 	assert.Equal(expectedBankStatement, rec.Body.String())
+}
+
+func Test_create_default_handler_factory(t *testing.T) {
+	var (
+		accountRepositoryFactory       model.AccountRepositoryFactory
+		statementViewRepositoryFactory model.StatementViewRepositoryFactory
+	)
+	newDefaultHandlerFactory(accountRepositoryFactory, statementViewRepositoryFactory)
 }
 
 type mockHandlerFactory struct {

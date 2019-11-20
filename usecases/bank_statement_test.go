@@ -5,8 +5,8 @@ package usecases_test
 import (
 	"testing"
 
-	"gitlab.com/dc0d/go-workshop/model"
-	"gitlab.com/dc0d/go-workshop/usecases"
+	"github.com/dc0d/workshop/model"
+	"github.com/dc0d/workshop/usecases"
 
 	"github.com/stretchr/testify/require"
 )

@@ -3,7 +3,7 @@ package repositories
 import (
 	"time"
 
-	"gitlab.com/dc0d/go-workshop/model"
+	"github.com/dc0d/workshop/model"
 )
 
 type timeSource func() time.Time
