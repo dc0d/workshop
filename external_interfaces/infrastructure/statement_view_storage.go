@@ -7,20 +7,17 @@ import (
 	"github.com/dc0d/workshop/model"
 )
 
-// StatementViewStorage .
 type StatementViewStorage struct {
 	mx      sync.RWMutex
 	storage map[string]string
 }
 
-// NewStatementViewStorage .
 func NewStatementViewStorage() *StatementViewStorage {
 	return &StatementViewStorage{
 		storage: make(map[string]string),
 	}
 }
 
-// Find .
 func (view *StatementViewStorage) Find(id string) (*model.Statement, error) {
 	view.mx.RLock()
 	defer view.mx.RUnlock()
@@ -34,7 +31,6 @@ func (view *StatementViewStorage) Find(id string) (*model.Statement, error) {
 	return account.Statement(), nil
 }
 
-// Save .
 func (view *StatementViewStorage) Save(eventRecords ...model.EventRecord) error {
 	view.mx.Lock()
 	defer view.mx.Unlock()

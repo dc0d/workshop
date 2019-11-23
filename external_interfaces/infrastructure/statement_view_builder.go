@@ -4,13 +4,11 @@ import (
 	"github.com/dc0d/workshop/model"
 )
 
-// StatementViewBuilder .
 type StatementViewBuilder struct {
 	queue   model.EventQueue
 	storage model.StatementViewStorage
 }
 
-// NewStatementViewBuilder .
 func NewStatementViewBuilder(
 	queue model.EventQueue,
 	storage model.StatementViewStorage) *StatementViewBuilder {

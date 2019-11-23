@@ -12,7 +12,6 @@ type eventStorage struct {
 	storage map[string]map[int]string
 }
 
-// NewEventStorage .
 func NewEventStorage() model.EventStorage {
 	return &eventStorage{storage: make(map[string]map[int]string)}
 }

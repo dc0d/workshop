@@ -9,7 +9,6 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-// NewRouter .
 func NewRouter(
 	accountRepositoryFactory model.AccountRepositoryFactory,
 	statementViewRepositoryFactory model.StatementViewRepositoryFactory) *echo.Echo {

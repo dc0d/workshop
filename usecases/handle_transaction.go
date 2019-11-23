@@ -8,7 +8,6 @@ type handleTransaction struct {
 	repo model.AccountRepository
 }
 
-// NewHandleTransaction .
 func NewHandleTransaction(repo model.AccountRepository) model.HandleTransaction {
 	return &handleTransaction{repo: repo}
 }

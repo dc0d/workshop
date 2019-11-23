@@ -9,7 +9,6 @@ type eventStore struct {
 	publisher model.EventPublisher
 }
 
-// NewEventStore .
 func NewEventStore(storage model.EventStorage, publisher model.EventPublisher) model.EventStorage {
 	return &eventStore{
 		storage:   storage,

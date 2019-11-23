@@ -2,7 +2,6 @@ package model
 
 import "fmt"
 
-// Amount .
 type Amount int
 
 func (a Amount) String() string {

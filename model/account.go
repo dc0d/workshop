@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-// import "time"
-
 // Account represents a client account.
 // It is assumed that each client has only one account - to keep the kata simple.
 type Account struct {
@@ -17,7 +15,6 @@ type Account struct {
 	version      int
 }
 
-// NewAccount creates a *Account.
 func NewAccount(id string) *Account {
 	account := &Account{
 		id:      id,
@@ -27,26 +24,20 @@ func NewAccount(id string) *Account {
 	return account
 }
 
-// GetID .
 func (account *Account) GetID() string { return account.id }
 
-// GetClientID .
 func (account *Account) GetClientID() string { return account.clientID }
 
-// GetTransactions .
 func (account *Account) GetTransactions() []Transaction {
 	return append([]Transaction(nil), account.transactions...)
 }
 
-// GetVersion .
 func (account *Account) GetVersion() int { return account.version }
 
-// RebuildFrom .
 func (account *Account) RebuildFrom(events ...StreamEvent) {
 	account.applyEvents(false, events...)
 }
 
-// ReloadFromSnapshot .
 func (account *Account) ReloadFromSnapshot(snapshot *AccountSnapshot) {
 	account.id = snapshot.ID
 	account.clientID = snapshot.ClientID
@@ -54,7 +45,6 @@ func (account *Account) ReloadFromSnapshot(snapshot *AccountSnapshot) {
 	account.transactions = append([]Transaction{}, snapshot.Transactions...)
 }
 
-// GetSnapshot .
 func (account *Account) GetSnapshot() *AccountSnapshot {
 	var snapshot AccountSnapshot
 	snapshot.ID = account.id
@@ -64,7 +54,6 @@ func (account *Account) GetSnapshot() *AccountSnapshot {
 	return &snapshot
 }
 
-// CreateAccount .
 func (account *Account) CreateAccount(clientID string) error {
 	var event AccountCreated
 	event.ID = account.GetID()
@@ -73,7 +62,6 @@ func (account *Account) CreateAccount(clientID string) error {
 	return account.applyEvents(true, &event)
 }
 
-// Deposit .
 func (account *Account) Deposit(amount Amount, transactionTime time.Time) {
 	var event AmountDeposited
 	event.ID = account.GetID()
@@ -83,7 +71,6 @@ func (account *Account) Deposit(amount Amount, transactionTime time.Time) {
 	account.applyEvents(true, &event)
 }
 
-// Withdraw .
 func (account *Account) Withdraw(amount Amount, transactionTime time.Time) {
 	var event AmountWithdrawn
 	event.ID = account.GetID()
@@ -93,12 +80,10 @@ func (account *Account) Withdraw(amount Amount, transactionTime time.Time) {
 	account.applyEvents(true, &event)
 }
 
-// Changes .
 func (account *Account) Changes() []StreamEvent {
 	return account.changes
 }
 
-// Statement .
 func (account *Account) Statement() *Statement {
 	st := NewStatement()
 
@@ -159,17 +144,14 @@ func (account *Account) applyEvents(isNew bool, events ...StreamEvent) error {
 	return nil
 }
 
-// Transaction .
 type Transaction struct {
 	Type   TransactionType
 	Amount Amount
 	Time   time.Time
 }
 
-// TransactionType .
 type TransactionType string
 
-// AccountSnapshot .
 type AccountSnapshot struct {
 	ID           string        `json:"id,omitempty"`
 	ClientID     string        `json:"client_id,omitempty"`
@@ -177,13 +159,11 @@ type AccountSnapshot struct {
 	Version      int           `json:"version,omitempty"`
 }
 
-// Constants
 const (
 	DepositTransaction    TransactionType = "DEPOSIT"
 	WithdrawalTransaction TransactionType = "WITHDRAWAL"
 )
 
-// Errors
 var (
 	ErrAccountIDEmpty = errors.New("account id must have value")
 	ErrClientIDEmpty  = errors.New("client id must have value")

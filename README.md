@@ -14,6 +14,56 @@ mockgen -source file/path.go | pbcopy
 
 Some test double are generated automatically from interfaces using `go generate ./...` - using moq.
 
+# Tooling
+
+To avoid being forced by default linter, `golint`, it's possible to use a drop-in replacement, [`revive`](https://github.com/mgechev/revive).
+
+Go to home directory (`$ cd`) and create this config file for `revive`:
+
+```
+ignoreGeneratedHeader = false
+severity = "warning"
+confidence = 0.8
+errorCode = 0
+warningCode = 0
+
+[rule.blank-imports]
+[rule.context-as-argument]
+[rule.context-keys-type]
+[rule.dot-imports]
+[rule.error-return]
+[rule.error-strings]
+[rule.error-naming]
+# [rule.exported]
+[rule.if-return]
+[rule.increment-decrement]
+[rule.var-naming]
+[rule.var-declaration]
+[rule.package-comments]
+[rule.range]
+[rule.receiver-naming]
+[rule.time-naming]
+[rule.unexported-return]
+[rule.indent-error-flow]
+[rule.errorf]
+[rule.empty-block]
+[rule.superfluous-else]
+[rule.unused-parameter]
+[rule.unreachable-code]
+[rule.redefines-builtin-id]
+```
+
+Notice the commented line, which stops the linter from complaining on missing documentation.
+
+In VSCode provide this setting (for Go extension):
+
+```
+{
+    "go.lintTool": "revive",
+    "go.lintFlags": ["--config=~/.golint_revive_config.toml"]
+}
+```
+
 # TODO
 
 This is just a practice and there are room for improvement:

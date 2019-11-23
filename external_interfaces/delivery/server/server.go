@@ -10,7 +10,6 @@ import (
 	"github.com/dc0d/workshop/model"
 )
 
-// Start .
 func Start() {
 	router := api.NewRouter(
 		defaultAccountRepositoryFactory{},

@@ -8,13 +8,11 @@ import (
 	"github.com/dc0d/workshop/model"
 )
 
-// AccountRepository .
 type AccountRepository struct {
 	store      model.EventStorage
 	timeSource model.TimeSource
 }
 
-// NewAccountRepository .
 func NewAccountRepository(store model.EventStorage, timeSource model.TimeSource) *AccountRepository {
 	return &AccountRepository{
 		store:      store,
@@ -22,7 +20,6 @@ func NewAccountRepository(store model.EventStorage, timeSource model.TimeSource)
 	}
 }
 
-// Find .
 func (repo *AccountRepository) Find(accountID string) (*model.Account, error) {
 	records, err := repo.store.Load(accountID)
 	if err != nil {
@@ -45,7 +42,6 @@ func (repo *AccountRepository) Find(accountID string) (*model.Account, error) {
 	return account, nil
 }
 
-// Save .
 func (repo *AccountRepository) Save(account *model.Account) (err error) {
 	var eventRecords []model.EventRecord
 	version := account.GetVersion()

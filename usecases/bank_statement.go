@@ -6,7 +6,6 @@ type bankStatement struct {
 	repo model.StatementViewRepository
 }
 
-// NewBankStatement .
 func NewBankStatement(repo model.StatementViewRepository) model.BankStatement {
 	return &bankStatement{repo: repo}
 }

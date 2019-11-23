@@ -2,7 +2,6 @@ package model
 
 import "time"
 
-// StreamEvent .
 type StreamEvent interface {
 	GetID() string
 	GetTimestamp() time.Time
@@ -23,14 +22,12 @@ func (e *streamEvent) SetTimestamp(t time.Time) { e.Timestamp = t }
 func (e streamEvent) GetVersion() int           { return e.Version }
 func (e *streamEvent) SetVersion(v int)         { e.Version = v }
 
-// AccountCreated .
 type AccountCreated struct {
 	streamEvent
 
 	ClientID string
 }
 
-// Validate .
 func (e AccountCreated) Validate() error {
 	if e.GetID() == "" {
 		return ErrAccountIDEmpty
@@ -41,7 +38,6 @@ func (e AccountCreated) Validate() error {
 	return nil
 }
 
-// AmountDeposited .
 type AmountDeposited struct {
 	streamEvent
 
@@ -49,7 +45,6 @@ type AmountDeposited struct {
 	TransactionTime time.Time
 }
 
-// AmountWithdrawn .
 type AmountWithdrawn struct {
 	streamEvent
 

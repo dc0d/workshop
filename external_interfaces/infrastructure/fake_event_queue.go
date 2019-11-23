@@ -2,13 +2,11 @@ package infrastructure
 
 import "github.com/dc0d/workshop/model"
 
-// FakeEventQueue .
 type FakeEventQueue struct {
 	incoming chan model.EventRecord
 	outgoing chan model.EventRecord
 }
 
-// NewFakeEventQueue .
 func NewFakeEventQueue() *FakeEventQueue {
 	queue := &FakeEventQueue{
 		incoming: make(chan model.EventRecord),
@@ -18,7 +16,6 @@ func NewFakeEventQueue() *FakeEventQueue {
 	return queue
 }
 
-// Publish .
 func (queue *FakeEventQueue) Publish(messages ...model.EventRecord) error {
 	for _, msg := range messages {
 		queue.incoming <- msg
@@ -26,7 +23,6 @@ func (queue *FakeEventQueue) Publish(messages ...model.EventRecord) error {
 	return nil
 }
 
-// Consume .
 func (queue *FakeEventQueue) Consume() <-chan model.EventRecord {
 	return queue.outgoing
 }

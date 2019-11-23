@@ -5,15 +5,12 @@ import (
 	"time"
 )
 
-// Statement .
 type Statement struct {
 	Lines []StatementLine
 }
 
-// NewStatement .
 func NewStatement() *Statement { return &Statement{} }
 
-// AddStatementLine .
 func (s *Statement) AddStatementLine(line StatementLine) {
 	s.Lines = append(s.Lines, line)
 }
@@ -29,7 +26,6 @@ func (s *Statement) String() string {
 	return strings.TrimRight(sb.String(), "\n")
 }
 
-// StatementLine .
 type StatementLine struct {
 	Date    time.Time
 	Credit  Amount

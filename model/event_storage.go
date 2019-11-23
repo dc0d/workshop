@@ -1,12 +1,10 @@
 package model
 
-// EventStorage .
 type EventStorage interface {
 	Load(streamID string) ([]EventRecord, error)
 	Append(events ...EventRecord) error
 }
 
-// EventRecord .
 type EventRecord struct {
 	StreamID string
 	Version  int
