@@ -3,7 +3,7 @@ package usecases_test
 import (
 	"testing"
 
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 	"github.com/dc0d/workshop/usecases"
 
 	"github.com/stretchr/testify/require"

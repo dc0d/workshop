@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/dc0d/workshop/interface_adapters/repositories"
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 
 	gomock "github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"

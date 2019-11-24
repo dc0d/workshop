@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 )
 
 func Test_sortable_events(t *testing.T) {

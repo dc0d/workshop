@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 	"github.com/dc0d/workshop/usecases"
 
 	"github.com/labstack/echo"

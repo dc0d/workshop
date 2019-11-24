@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 )
 
 type StatementViewStorage struct {

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/dc0d/workshop/external_interfaces/infrastructure"
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 
 	"github.com/stretchr/testify/require"
 )

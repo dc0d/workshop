@@ -1,6 +1,6 @@
 package infrastructure
 
-import "github.com/dc0d/workshop/model"
+import model "github.com/dc0d/workshop/domain_model"
 
 type QueueEventPublisher struct {
 	queue model.EventQueue

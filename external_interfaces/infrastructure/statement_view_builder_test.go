@@ -1,13 +1,13 @@
 package infrastructure_test
 
-//go:generate moq -pkg infrastructure_test -out ./mock_statement_view_storage_test.go ./../../model StatementViewStorage
+//go:generate moq -pkg infrastructure_test -out ./mock_statement_view_storage_test.go ./../../domain_model StatementViewStorage
 
 import (
 	"testing"
 	"time"
 
+	model "github.com/dc0d/workshop/domain_model"
 	"github.com/dc0d/workshop/external_interfaces/infrastructure"
-	"github.com/dc0d/workshop/model"
 
 	"github.com/stretchr/testify/require"
 )

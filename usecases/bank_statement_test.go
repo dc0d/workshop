@@ -1,11 +1,11 @@
 package usecases_test
 
-//go:generate moq -pkg usecases_test -out ./mock_statement_view_repository_test.go ./../model StatementViewRepository
+//go:generate moq -pkg usecases_test -out ./mock_statement_view_repository_test.go ./../domain_model StatementViewRepository
 
 import (
 	"testing"
 
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 	"github.com/dc0d/workshop/usecases"
 
 	"github.com/stretchr/testify/require"

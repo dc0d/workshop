@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 
 	gomock "github.com/golang/mock/gomock"
 	"github.com/labstack/echo"

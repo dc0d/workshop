@@ -7,7 +7,7 @@ import (
 	"github.com/dc0d/workshop/external_interfaces/infrastructure"
 	"github.com/dc0d/workshop/interface_adapters/repositories"
 	"github.com/dc0d/workshop/interface_adapters/web/api"
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 )
 
 func Start() {

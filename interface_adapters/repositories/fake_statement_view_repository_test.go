@@ -1,12 +1,12 @@
 package repositories_test
 
-//go:generate moq -pkg repositories_test -out ./mock_account_repository_test.go ./../../model AccountRepository
+//go:generate moq -pkg repositories_test -out ./mock_account_repository_test.go ./../../domain_model AccountRepository
 
 import (
 	"testing"
 
+	model "github.com/dc0d/workshop/domain_model"
 	"github.com/dc0d/workshop/interface_adapters/repositories"
-	"github.com/dc0d/workshop/model"
 
 	"github.com/stretchr/testify/require"
 )

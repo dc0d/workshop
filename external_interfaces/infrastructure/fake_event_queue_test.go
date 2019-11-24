@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 	"github.com/dc0d/workshop/external_interfaces/infrastructure"
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 )
 
 func Test_create_fake_event_queue(t *testing.T) {

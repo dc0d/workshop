@@ -4,7 +4,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 )
 
 type eventStorage struct {

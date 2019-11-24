@@ -1,6 +1,8 @@
 package usecases
 
-import "github.com/dc0d/workshop/model"
+import (
+	model "github.com/dc0d/workshop/domain_model"
+)
 
 type bankStatement struct {
 	repo model.StatementViewRepository

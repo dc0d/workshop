@@ -4,7 +4,7 @@
 package infrastructure_test
 
 import (
-	"github.com/dc0d/workshop/model"
+	model "github.com/dc0d/workshop/domain_model"
 	"sync"
 )
 

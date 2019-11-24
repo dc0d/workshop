@@ -1,12 +1,12 @@
 package infrastructure_test
 
-//go:generate moq -pkg infrastructure_test -out ./mock_event_queue_test.go ./../../model EventQueue
+//go:generate moq -pkg infrastructure_test -out ./mock_event_queue_test.go ./../../domain_model EventQueue
 
 import (
 	"testing"
 
+	model "github.com/dc0d/workshop/domain_model"
 	"github.com/dc0d/workshop/external_interfaces/infrastructure"
-	"github.com/dc0d/workshop/model"
 
 	"github.com/stretchr/testify/require"
 )
