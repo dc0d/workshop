@@ -4,16 +4,16 @@ import (
 	"net/http"
 	"time"
 
+	model "github.com/dc0d/workshop/domain_model"
 	"github.com/dc0d/workshop/external_interfaces/infrastructure"
 	"github.com/dc0d/workshop/interface_adapters/repositories"
 	"github.com/dc0d/workshop/interface_adapters/web/api"
-	model "github.com/dc0d/workshop/domain_model"
 )
 
 func Start() {
 	router := api.NewRouter(
-		defaultAccountRepositoryFactory{},
-		defaultStatementViewRepositoryFactory{})
+		model.AccountRepositoryFactoryFunc(createAccountRepository),
+		model.StatementViewRepositoryFactoryFunc(createStatementViewRepository))
 
 	s := newServer()
 	router.Logger.Fatal(router.StartServer(s))
@@ -29,15 +29,11 @@ func newServer() *http.Server {
 	}
 }
 
-type defaultAccountRepositoryFactory struct{}
-
-func (defaultAccountRepositoryFactory) CreateAccountRepository() model.AccountRepository {
+func createAccountRepository() model.AccountRepository {
 	return _accountRepo
 }
 
-type defaultStatementViewRepositoryFactory struct{}
-
-func (defaultStatementViewRepositoryFactory) CreateStatementViewRepository() model.StatementViewRepository {
+func createStatementViewRepository() model.StatementViewRepository {
 	return _statementRepo
 }
 
