@@ -1,11 +1,10 @@
 package primefactors
 
 func Generate(n int) (result []int) {
-	for ; n > 2 && n%2 == 0; n /= 2 {
-		result = append(result, 2)
-	}
-	for ; n > 3 && n%3 == 0; n /= 3 {
-		result = append(result, 3)
+	for p := 2; n > p; p++ {
+		for ; n%p == 0; n /= p {
+			result = append(result, p)
+		}
 	}
 	if n > 1 {
 		result = append(result, n)

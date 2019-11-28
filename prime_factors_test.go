@@ -21,6 +21,10 @@ func Test_generate_prime_factors(t *testing.T) {
 			{7, []int{7}},       // already grean; does it help? or should be removed?
 			{8, []int{2, 2, 2}}, // already grean; does it help? or should be removed?
 			{9, []int{3, 3}},
+			{10, []int{2, 5}},    // already grean; does it help? or should be removed?
+			{11, []int{11}},      // already grean; does it help? or should be removed?
+			{12, []int{2, 2, 3}}, // already grean; does it help? or should be removed?
+			{2 * 3 * 5 * 7 * 11 * 13 * 17 * 19 * 23 * 29, []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29}}, // first ten prime numbers
 		}
 	)
 
