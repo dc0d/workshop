@@ -1,5 +1,8 @@
 package primefactors
 
-func Generate(int) []int {
-	return nil
+func Generate(n int) (result []int) {
+	if n == 2 {
+		result = append(result, 2)
+	}
+	return
 }
