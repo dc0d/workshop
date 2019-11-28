@@ -14,6 +14,7 @@ func Test_generate_prime_factors(t *testing.T) {
 		expectations = []primeFactorsExpectation{
 			{1, nil},
 			{2, []int{2}},
+			{3, []int{3}},
 		}
 	)
 
