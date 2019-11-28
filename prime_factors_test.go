@@ -15,6 +15,7 @@ func Test_generate_prime_factors(t *testing.T) {
 			{1, nil},
 			{2, []int{2}},
 			{3, []int{3}},
+			{4, []int{2, 2}},
 		}
 	)
 
