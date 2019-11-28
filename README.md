@@ -1,5 +1,3 @@
-# workshop
+# Generating Prime Factors Kata
 
-Personal workshops /
-
-- [bank kata in Go](https://github.com/dc0d/workshop/tree/go_bank_kata)
+It is mentioned in [The Transformation Priority Premise](https://blog.cleancoder.com/uncle-bob/2013/05/27/TheTransformationPriorityPremise.html).
