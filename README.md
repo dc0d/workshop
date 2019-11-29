@@ -1,23 +1,24 @@
-# A TDD Workflow; TCR
+# Gilded Rose Kata
 
-Source: [test && commit || revert](https://medium.com/@kentbeck_7670/test-commit-revert-870bbd756864)
+Source: [Gilded Rose Kata](https://github.com/emilybache/GildedRose-Refactoring-Kata)
 
-To start the tcr loop:
+> The goal here is to practice a technique for refactoring legacy code.
 
-```
-$ . ./tcr.sh
-```
+# Steps Taken; A High-Level View
 
-The test command that is running (inside `./scripts/test.sh`) is:
+There were two phases:
+- Phase 1: Have a test with 100% coverage; to preserve the bhaviour of the current system. After reaching 100% coverage, we will not touch this test and it acts as the measure for evaluating the next steps.
+- Phase 2: Refactoring the code.
 
-```
-$ go test -v -count=1 -timeout 10s ./...
-```
+### Phase 1
 
-It is possible to adapt this to your style.
+- Adding different inputs and crystalize the expected output by running the test and getting the expected transformation on the item.
+- At each step, it is possible to look into code for constant values that affect the logic (those magic strings and numbers), to have a pair of (input, expected-output) that increases the coverage a bit further.
 
-A build step is added to make sure the code is valid before running the TCR part - so here it's `build && (test && commit || revert)`.
+### Phase 2
 
-The test code will not be reverted. Only the code will be reverted - in case it fails to fulfil the expectations (tests).
-
-Each successful change will be committed with a `WIP` message. So it's better to work in a local branch and then rebase or merge/squash.
+- Here the goal if to refactor this code and put it in a more meaningful structure.
+- As we see there are items and each item has a name, so we can dispatch the logic based on the item's name.
+- One technique is having a switch statement based on the item's name and copy the whole body of the function to each branch.
+- After having the branches, with a green test, it can be seen that the coverage drops. It's because we branched based on the name of the item and some of the logic there is working no more.
+- After having 100% coverage again, it's possible to replace that conditional statement (here, the switch statement) with polymorphism. For example here a `qualifier` interface is defined and implemented accordingly for each item.
