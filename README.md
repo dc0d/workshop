@@ -8,4 +8,4 @@ Personal workshops /
 - [TCR workflow for TDD in Elixir](https://github.com/dc0d/workshop/tree/elixir_tcr_template)
 - [Gilded Rose Kata in Go](https://github.com/dc0d/workshop/tree/go_gilded_rose)
 - [String Calculator Kata in Go](https://github.com/dc0d/workshop/tree/go_string_calculator_kata)
-
+- [Roman Numerals Kata in Go](https://github.com/dc0d/workshop/tree/go_roman_numerals_kata)
