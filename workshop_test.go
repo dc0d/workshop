@@ -9,37 +9,45 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-func Test_calculate_fibonacci_sequence(t *testing.T) {
+func Test_draft(t *testing.T) {
 	var (
-		expectations = []fibExpectation{
-			{1, 1},
-			{2, 1},
-			{3, 2},
-			{4, 3},
-			{10, 55},
-			{12, 144},
-			{20, 6765},
+		expectations = []expectation{
+			{1, "I"},
+			{5, "V"},
+			{10, "X"},
+			{50, "L"},
+			{100, "C"},
+			{500, "D"},
+			{1000, "M"},
+			{7, "VII"},
+			{14, "XIV"},
+			{15, "XV"},
+			{99, "XCIX"},
+			{2006, "MMVI"},
+			{1944, "MCMXLIV"},
+			{3497, "MMMCDXCVII"},
+			{1999, "MCMXCIX"}, // also MIM ?
 		}
 	)
 
 	for _, exp := range expectations {
 		var (
-			n           = exp.n
-			expectedFib = exp.fib
+			n             = exp.decimal
+			expectedRoman = exp.expectedRoman
 		)
 
-		t.Run(fmt.Sprintf("finding %dth fibonacci number", n), func(t *testing.T) {
+		t.Run(fmt.Sprintf("converting %d to roman numeral", n), func(t *testing.T) {
 			var (
 				assert = assert.New(t)
 			)
 
-			fib := workshop.Fib(n)
-			assert.Equal(expectedFib, fib)
+			romanNumber := workshop.ToRomanNumeral(n)
+			assert.Equal(expectedRoman, romanNumber)
 		})
 	}
 }
 
-type fibExpectation struct {
-	n   int
-	fib int
+type expectation struct {
+	decimal       int
+	expectedRoman string
 }
