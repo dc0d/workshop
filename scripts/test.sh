@@ -1,1 +1,1 @@
-mix test --timeout 10000 --trace
+mix test --timeout 10000 --trace --cover

@@ -12,8 +12,8 @@ defmodule WorkshopTest do
       {20, 6765}
     ]
 
-    for {n, expected_fib} <- expectations do
-      assert Workshop.fib(n) == expected_fib
+    for {input, expected_output} <- expectations do
+      assert Workshop.fib(input) == expected_output
     end
   end
 end
