@@ -11,7 +11,7 @@ import (
 
 func Test_calculate_fibonacci_sequence(t *testing.T) {
 	var (
-		expectations = []fibExpectation{
+		expectations = []expectation{
 			{1, 1},
 			{2, 1},
 			{3, 2},
@@ -24,22 +24,22 @@ func Test_calculate_fibonacci_sequence(t *testing.T) {
 
 	for _, exp := range expectations {
 		var (
-			n           = exp.n
-			expectedFib = exp.fib
+			input          = exp.input
+			expectedOutput = exp.expectedOutput
 		)
 
-		t.Run(fmt.Sprintf("finding %dth fibonacci number", n), func(t *testing.T) {
+		t.Run(fmt.Sprintf("finding %dth fibonacci number", input), func(t *testing.T) {
 			var (
 				assert = assert.New(t)
 			)
 
-			fib := workshop.Fib(n)
-			assert.Equal(expectedFib, fib)
+			output := workshop.Fib(input)
+			assert.Equal(expectedOutput, output)
 		})
 	}
 }
 
-type fibExpectation struct {
-	n   int
-	fib int
+type expectation struct {
+	input          int
+	expectedOutput int
 }
