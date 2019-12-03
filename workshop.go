@@ -1,7 +1,6 @@
 package workshop
 
 import (
-	"encoding/json"
 	"sort"
 	"strconv"
 	"unicode"
@@ -143,16 +142,6 @@ func newStr(s string) *string {
 type segment struct {
 	str *string
 	num *int
-}
-
-func (sg segment) MarshalJSON() ([]byte, error) {
-	var v struct {
-		Str *string `json:"str,omitempty"`
-		Num *int    `json:"num,omitempty"`
-	}
-	v.Str = sg.str
-	v.Num = sg.num
-	return json.Marshal(v)
 }
 
 const (

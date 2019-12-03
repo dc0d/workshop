@@ -175,9 +175,20 @@ func Test_less_segment(t *testing.T) {
 }
 
 func toJSON(v interface{}) string {
+	if seg, ok := v.(segment); ok {
+		var tseg testSegment
+		tseg.Str = seg.str
+		tseg.Num = seg.num
+		v = tseg
+	}
 	js, err := json.Marshal(v)
 	if err != nil {
 		panic(err)
 	}
 	return string(js)
+}
+
+type testSegment struct {
+	Str *string `json:"str,omitempty"`
+	Num *int    `json:"num,omitempty"`
 }
