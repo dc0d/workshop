@@ -9,37 +9,50 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-func Test_calculate_fibonacci_sequence(t *testing.T) {
+func Test_draft(t *testing.T) {
 	var (
 		expectations = []expectation{
-			{1, 1},
-			{2, 1},
-			{3, 2},
-			{4, 3},
-			{10, 55},
-			{12, 144},
-			{20, 6765},
+			{[]string{}, []string{}},
+			{[]string{"Alpha 2", "Alpha 1"}, []string{"Alpha 1", "Alpha 2"}},
+			{[]string{"Alpha 100", "Alpha 2"}, []string{"Alpha 2", "Alpha 100"}},
+			{
+				[]string{
+					"Alpha 100",
+					"Alpha 2",
+					"Alpha 200",
+					"Alpha 2A",
+					"Alpha 2A-8000",
+					"Alpha 2A-900",
+				},
+				[]string{
+					"Alpha 2",
+					"Alpha 2A",
+					"Alpha 2A-900",
+					"Alpha 2A-8000",
+					"Alpha 100",
+					"Alpha 200",
+				}},
 		}
 	)
 
-	for _, exp := range expectations {
+	for i, exp := range expectations {
 		var (
 			input          = exp.input
 			expectedOutput = exp.expectedOutput
 		)
 
-		t.Run(fmt.Sprintf("finding %dth fibonacci number", input), func(t *testing.T) {
+		t.Run(fmt.Sprintf("sort case %v", i), func(t *testing.T) {
 			var (
 				assert = assert.New(t)
 			)
 
-			output := workshop.Fib(input)
-			assert.Equal(expectedOutput, output)
+			output := workshop.Sort(input...)
+			assert.EqualValues(expectedOutput, output)
 		})
 	}
 }
 
 type expectation struct {
-	input          int
-	expectedOutput int
+	input          []string
+	expectedOutput []string
 }
