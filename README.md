@@ -21,3 +21,11 @@ A build step is added to make sure the code is valid before running the TCR part
 The test code will not be reverted. Only the code will be reverted - in case it fails to fulfil the expectations (tests).
 
 Each successful change will be committed with a `WIP` message. So it's better to work in a local branch and then rebase or merge/squash.
+
+# Traditional TDD
+
+Still sometimes I find myself to fall back to traditional TDD. For such occasions, it's possible to run just the tests using:
+
+```
+$ . ./watch-test.sh
+```
