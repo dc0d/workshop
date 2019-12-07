@@ -1,19 +1,42 @@
 defmodule WorkshopTest do
   use ExUnit.Case
 
-  test "calculate nth fibonacci number" do
+  test "sort by natural order" do
     expectations = [
-      {1, 1},
-      {2, 1},
-      {3, 2},
-      {4, 3},
-      {10, 55},
-      {12, 144},
-      {20, 6765}
+      %{
+        input: ["Alpha 100", "Alpha 1"],
+        expected_output: ["Alpha 1", "Alpha 100"]
+      },
+      %{
+        input: ["Alpha 100", "Alpha 2"],
+        expected_output: ["Alpha 2", "Alpha 100"]
+      },
+      %{
+        input: ["Alpha 2A-8000", "Alpha 100"],
+        expected_output: ["Alpha 2A-8000", "Alpha 100"]
+      },
+      %{
+        input: [
+          "Alpha 100",
+          "Alpha 2",
+          "Alpha 200",
+          "Alpha 2A",
+          "Alpha 2A-8000",
+          "Alpha 2A-900"
+        ],
+        expected_output: [
+          "Alpha 2",
+          "Alpha 2A",
+          "Alpha 2A-900",
+          "Alpha 2A-8000",
+          "Alpha 100",
+          "Alpha 200"
+        ]
+      }
     ]
 
-    for {input, expected_output} <- expectations do
-      assert Workshop.fib(input) == expected_output
+    for %{input: input, expected_output: expected_output} <- expectations do
+      assert Workshop.sort(input) == expected_output
     end
   end
 end
