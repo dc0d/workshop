@@ -12,4 +12,5 @@ Personal workshops /
 - [Natural Sort Kata in Go](https://github.com/dc0d/workshop/tree/go_natural_sort_kata)
 - [Natural Sort Kata in Elixir](https://github.com/dc0d/workshop/tree/elixir_natural_sort_kata)
 - [Roman Numerals Kata in Go](https://github.com/dc0d/workshop/tree/go_roman_numerals_kata)
-- [Roman Numerals Kata in Elixir](https://github.com/dc0d/workshop/tree/elixir_roman_numerals_kata)
+- [Roman Numerals Kata in Elixir - Employing Recursion](https://github.com/dc0d/workshop/tree/elixir_roman_numerals_kata)
+- [Roman Numerals Kata in Elixir - Employing Streams](https://github.com/dc0d/workshop/tree/elixir_prime_factors_kata_using_streams)
