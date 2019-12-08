@@ -5,18 +5,32 @@ defmodule Workshop do
         []
 
       _ ->
-        find(n, 2, [])
+        find(n)
     end
   end
 
-  defp find(n, candidate, acc_candidates) do
-    {n, candidate, acc_candidates} = next(n, candidate, acc_candidates)
+  defp find(n) do
+    {:done, result} =
+      Stream.iterate({n, 2, []}, fn
+        {n, candidate, acc_candidates} ->
+          {n, candidate, acc_candidates} = next(n, candidate, acc_candidates)
 
-    if n < candidate do
-      acc_candidates
-    else
-      find(n, candidate, acc_candidates)
-    end
+          if n < candidate do
+            {:done, acc_candidates}
+          else
+            {n, candidate, acc_candidates}
+          end
+      end)
+      |> Stream.drop_while(fn
+        {:done, _} ->
+          false
+
+        _ ->
+          true
+      end)
+      |> Enum.at(0)
+
+    result
   end
 
   defp next(n, candidate, acc_candidates) when rem(n, candidate) == 0 do
