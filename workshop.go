@@ -3,149 +3,123 @@ package workshop
 import (
 	"sort"
 	"strconv"
-	"unicode"
 )
 
-func Sort(input ...string) (result []string) {
-	st := newSortable(input...)
-	sort.Sort(st)
-	result = input
-	return
-}
+func Sort(input ...string) {
+	var segments [][]interface{}
+	for _, str := range input {
+		runes := []rune(str)
 
-type sortable struct {
-	input      []string
-	partitions [][]segment
-}
+		rawSegments := splitSegments(runes...)
+		typedSegments := convertSegments(rawSegments...)
 
-func newSortable(input ...string) *sortable {
-	res := &sortable{input: input}
-	for _, s := range input {
-		p := partition(s)
-		res.partitions = append(res.partitions, p)
+		segments = append(segments, typedSegments)
 	}
-	return res
+
+	st := &sorter{
+		len: func() int { return len(input) },
+		less: func(i, j int) bool {
+			seg1 := segments[i]
+			seg2 := segments[j]
+
+			return less(seg1, seg2)
+		},
+		swap: func(i, j int) {
+			input[i], input[j] = input[j], input[i]
+			segments[i], segments[j] = segments[j], segments[i]
+		},
+	}
+	sort.Sort(st)
 }
 
-func (st *sortable) Len() int { return len(st.input) }
-func (st *sortable) Less(i, j int) bool {
-	var (
-		equal = true
-		less  = false
-		p1    = st.partitions[i]
-		p2    = st.partitions[j]
-	)
-	for k, v := 0, 0; k < len(p1) && v < len(p2); k, v = k+1, v+1 {
-		lr := lessSegment(p1[k], p2[v])
-		rl := lessSegment(p2[v], p1[k])
-		less = less || lr
-		equal = equal && !rl && !lr
-		if less {
-			break
+func less(seg1, seg2 []interface{}) bool {
+	for k, l := 0, 0; k < len(seg1) && l < len(seg2); k, l = k+1, l+1 {
+		switch v1 := seg1[k].(type) {
+		case string:
+			switch v2 := seg2[l].(type) {
+			case string:
+				if v1 == v2 {
+					continue
+				}
+				return v1 < v2
+			case int64:
+				return false
+			default:
+				panic("invalid type")
+			}
+		case int64:
+			switch v2 := seg2[l].(type) {
+			case string:
+				return true
+			case int64:
+				if v1 == v2 {
+					continue
+				}
+				return v1 < v2
+			default:
+				panic("invalid type")
+			}
+		default:
+			panic("invalid type")
 		}
 	}
-	if equal {
-		return len(p1) < len(p2)
-	}
-	return less
-}
-func (st *sortable) Swap(i, j int) {
-	st.input[i], st.input[j] = st.input[j], st.input[i]
-	st.partitions[i], st.partitions[j] = st.partitions[j], st.partitions[i]
-}
-
-func lessSegment(sg1, sg2 segment) bool {
-	if sg1.str == nil && sg2.str != nil &&
-		sg1.num != nil && sg2.num == nil {
-		return true
-	}
-
-	if sg1.str != nil && sg2.str != nil &&
-		sg1.num == nil && sg2.num == nil {
-		return *sg1.str < *sg2.str
-	}
-
-	if sg1.str == nil && sg2.str == nil &&
-		sg1.num != nil && sg2.num != nil {
-		return *sg1.num < *sg2.num
-	}
-
 	return false
 }
 
-func partition(s string) (res []segment) {
-	runes := []rune(s)
+func convertSegments(rawSegments ...[]rune) []interface{} {
+	var (
+		segments []interface{}
+	)
+	for _, raw := range rawSegments {
+		str := string(raw)
 
-	runeType := runeNone
-	var part []rune
+		if '0' <= raw[0] && raw[0] <= '9' {
+			n, err := strconv.ParseInt(str, 10, 64)
+			if err != nil {
+				panic(err)
+			}
+			segments = append(segments, n)
+			continue
+		}
+
+		segments = append(segments, str)
+	}
+	return segments
+}
+
+func splitSegments(runes ...rune) [][]rune {
+	var (
+		lastCond          bool
+		currentRawSegment []rune
+		rawSegments       [][]rune
+	)
 	for _, r := range runes {
-		currentRuneType := typeOf(r)
+		cond := '0' <= r && r <= '9'
 
-		if runeType == runeNone {
-			part = append(part, r)
-			runeType = currentRuneType
-			continue
+		if lastCond == cond {
+			currentRawSegment = append(currentRawSegment, r)
+		} else {
+			lastCond = cond
+			if len(currentRawSegment) > 0 {
+				rawSegments = append(rawSegments, currentRawSegment)
+				currentRawSegment = []rune{r}
+			}
 		}
-
-		if runeType == currentRuneType {
-			part = append(part, r)
-			continue
-		}
-
-		res = append(res, makeSegment(runeType, string(part)))
-
-		part = nil
-		part = append(part, r)
-		runeType = currentRuneType
 	}
 
-	if part != nil {
-		res = append(res, makeSegment(runeType, string(part)))
+	if len(currentRawSegment) > 0 {
+		rawSegments = append(rawSegments, currentRawSegment)
 	}
 
-	return
+	return rawSegments
 }
 
-func makeSegment(runeType int, part string) segment {
-	switch runeType {
-	case runeDigit:
-		n, err := strconv.ParseInt(part, 10, 64)
-		if err != nil {
-			panic(err)
-		}
-		return segment{num: newNum(int(n))}
-	case runeAlphabet:
-		return segment{str: newStr(part)}
-	}
-	panic("invalid runeType")
+type sorter struct {
+	len  func() int
+	less func(i, j int) bool
+	swap func(i, j int)
 }
 
-func typeOf(r rune) int {
-	if unicode.IsDigit(r) {
-		return runeDigit
-	}
-	return runeAlphabet
-}
-
-func newNum(n int) *int {
-	res := new(int)
-	*res = n
-	return res
-}
-
-func newStr(s string) *string {
-	res := new(string)
-	*res = s
-	return res
-}
-
-type segment struct {
-	str *string
-	num *int
-}
-
-const (
-	runeNone     = -1
-	runeAlphabet = 100
-	runeDigit    = 200
-)
+func (st *sorter) Len() int           { return st.len() }
+func (st *sorter) Less(i, j int) bool { return st.less(i, j) }
+func (st *sorter) Swap(i, j int)      { st.swap(i, j) }

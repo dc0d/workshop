@@ -14,6 +14,8 @@ func Test_draft(t *testing.T) {
 		expectations = []expectation{
 			{[]string{}, []string{}},
 			{[]string{"Alpha 2", "Alpha 1"}, []string{"Alpha 1", "Alpha 2"}},
+			{[]string{"Alpha 1", "Alpha 2"}, []string{"Alpha 1", "Alpha 2"}},
+			{[]string{"Alpha 100", "Alpha 2A-8000"}, []string{"Alpha 2A-8000", "Alpha 100"}},
 			{[]string{"Alpha 100", "Alpha 2"}, []string{"Alpha 2", "Alpha 100"}},
 			{
 				[]string{
@@ -31,7 +33,8 @@ func Test_draft(t *testing.T) {
 					"Alpha 2A-8000",
 					"Alpha 100",
 					"Alpha 200",
-				}},
+				},
+			},
 		}
 	)
 
@@ -46,7 +49,8 @@ func Test_draft(t *testing.T) {
 				assert = assert.New(t)
 			)
 
-			output := workshop.Sort(input...)
+			workshop.Sort(input...)
+			output := input
 			assert.EqualValues(expectedOutput, output)
 		})
 	}
