@@ -10,6 +10,13 @@ import (
 )
 
 func Test_calculate_fibonacci_sequence(t *testing.T) {
+	type (
+		expectation struct {
+			input          int
+			expectedOutput int
+		}
+	)
+
 	var (
 		expectations = []expectation{
 			{1, 1},
@@ -34,12 +41,8 @@ func Test_calculate_fibonacci_sequence(t *testing.T) {
 			)
 
 			output := workshop.Fib(input)
+
 			assert.Equal(expectedOutput, output)
 		})
 	}
-}
-
-type expectation struct {
-	input          int
-	expectedOutput int
 }
