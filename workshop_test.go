@@ -22,11 +22,13 @@ func Test_draft(t *testing.T) {
 			{7, "VII"},
 			{14, "XIV"},
 			{15, "XV"},
-			{99, "XCIX"},
+			{99, "IC"},
 			{2006, "MMVI"},
 			{1944, "MCMXLIV"},
 			{3497, "MMMCDXCVII"},
-			{1999, "MCMXCIX"}, // also MIM ?
+			{1999, "MIM"},
+			{2020, "MMXX"},
+			{509, "DIX"},
 		}
 	)
 

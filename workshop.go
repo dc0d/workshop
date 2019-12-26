@@ -18,16 +18,22 @@ func ToRomanNumeral(n int) (result string) {
 }
 
 func toRomanNumeral(n int) (result string) {
-	if roman, ok := toRomanNumbers[n]; ok {
+	if roman, ok := decToRoman[n]; ok {
 		return roman
 	}
 
-	roman := biggest(n)
-	q, r := div(n, roman)
-	result += strings.Repeat(toRomanNumbers[roman], q)
+	{
+		ceiling, diff := romanCeiling(n)
+		if ceilingNumeral, diffIsRoman := decToRoman[diff]; diffIsRoman {
+			return ceilingNumeral + decToRoman[ceiling]
+		}
+	}
 
-	if r > 0 {
-		result += toRomanNumeral(r)
+	floor := romanFloor(n)
+	divisor, remainder := div(n, floor)
+	result = strings.Repeat(decToRoman[floor], divisor)
+	if remainder > 0 {
+		result += toRomanNumeral(remainder)
 	}
 
 	return
@@ -39,7 +45,28 @@ func div(n, roman int) (q, r int) {
 	return
 }
 
-func biggest(n int) (roman int) {
+func romanCeiling(n int) (ceiling, diffToCeiling int) {
+	switch {
+	case n <= 1:
+		ceiling, diffToCeiling = 1, 1-n
+	case n <= 5:
+		ceiling, diffToCeiling = 5, 5-n
+	case n <= 10:
+		ceiling, diffToCeiling = 10, 10-n
+	case n <= 50:
+		ceiling, diffToCeiling = 50, 50-n
+	case n <= 100:
+		ceiling, diffToCeiling = 100, 100-n
+	case n <= 500:
+		ceiling, diffToCeiling = 500, 500-n
+	default:
+		ceiling, diffToCeiling = 1000, 1000-n
+	}
+
+	return
+}
+
+func romanFloor(n int) (roman int) {
 	switch {
 	case n > 1000:
 		return 1000
@@ -57,7 +84,7 @@ func biggest(n int) (roman int) {
 	return 1
 }
 
-var toRomanNumbers = map[int]string{
+var decToRoman = map[int]string{
 	1000: "M",
 	500:  "D",
 	100:  "C",
