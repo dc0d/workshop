@@ -5,7 +5,7 @@ import (
 
 	model "github.com/dc0d/workshop/domain_model"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 type statementHandler struct {

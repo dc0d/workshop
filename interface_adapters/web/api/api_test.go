@@ -9,104 +9,159 @@ import (
 
 	model "github.com/dc0d/workshop/domain_model"
 
-	gomock "github.com/golang/mock/gomock"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/require"
 )
 
 func Test_transaction_command_handler_using_the_router(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-	assert := require.New(t)
+	var (
+		clientID          = "A_CLIENT_ID"
+		transactionDate   = parseDate("02-11-2019")
+		transactionAmount = 1000
 
-	clientID := "A_CLIENT_ID"
-	transactionDate := parseDate("02-11-2019")
-	transactionAmount := 1000
+		command        transactionCommand
+		commandPayload []byte
+		opt            model.HandleTransactionOptions
 
-	var command transactionCommand
-	command.Command = depositCommandName
-	command.Data.ClientID = clientID
-	command.Data.Amount = transactionAmount
-	command.Data.Time = transactionDate
-	commandPayload := toJSON(command)
+		ctxFac ProviderContextFactory
 
-	req := httptest.NewRequest(
-		http.MethodPost,
-		"/api/bank/transactions",
-		bytes.NewBuffer(commandPayload))
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	rec := httptest.NewRecorder()
+		req    *http.Request
+		rec    *httptest.ResponseRecorder
+		router *echo.Echo
 
-	usecase := NewMockHandleTransaction(ctrl)
-	usecase.
-		EXPECT().
-		Run(gomock.Any()).
-		Return(nil)
+		usecase *HandleTransactionMock
+		assert  = require.New(t)
+	)
 
-	factory := newMockHandlerFactory(usecase, nil)
+	{
+		command.Command = depositCommandName
+		command.Data.ClientID = clientID
+		command.Data.Amount = transactionAmount
+		command.Data.Time = transactionDate
+		commandPayload = toJSON(command)
 
-	router := newRouter(factory)
+		req = httptest.NewRequest(
+			http.MethodPost,
+			"/api/bank/transactions",
+			bytes.NewBuffer(commandPayload))
+		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		rec = httptest.NewRecorder()
+
+		ctxFac = func(c echo.Context) ProviderContext {
+			var ctx ProviderContext
+
+			usecase = &HandleTransactionMock{
+				RunFunc: func(option model.HandleTransactionOption) error {
+					option(&opt)
+
+					return nil
+				},
+			}
+
+			txFac := &HandleTransactionFactoryMock{
+				CreateHandleTransactionFunc: func(model.AccountRepository) model.HandleTransaction { return usecase },
+			}
+
+			accRepoFac := &AccountRepositoryFactoryMock{
+				CreateAccountRepositoryFunc: func() model.AccountRepository { return nil },
+			}
+
+			ctx = newMoqProviderContext(c, txFac, accRepoFac, nil, nil)
+
+			return ctx
+		}
+
+		router = newRouter(ctxFac)
+	}
+
 	router.ServeHTTP(rec, req)
 
-	assert.Equal(http.StatusOK, rec.Code)
 	assert.Empty(rec.Body.String())
+	assert.Equal(http.StatusOK, rec.Code)
+	assert.Condition(func() bool { return len(usecase.RunCalls()) == 1 }, "handle transaction usecase expected to be called once")
+	assert.Equal(clientID, opt.DepositCommand.ClientID)
+	assert.Equal(transactionAmount, opt.DepositCommand.Amount)
+	assert.Equal(transactionDate, opt.DepositCommand.Time)
 }
 
 func Test_bank_statement_using_the_router(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-	assert := require.New(t)
+	var (
+		clientID = "A_CLIENT_ID"
 
-	clientID := "A_CLIENT_ID"
-	req := httptest.NewRequest(
-		http.MethodGet,
-		fmt.Sprintf("/api/bank/%v/statement", clientID),
-		nil)
-	rec := httptest.NewRecorder()
+		ctxFac ProviderContextFactory
 
-	usecase := NewMockBankStatement(ctrl)
-	usecase.
-		EXPECT().
-		Run(clientID).
-		Return(sampleStatement(), nil)
+		req    *http.Request
+		rec    *httptest.ResponseRecorder
+		router *echo.Echo
 
-	factory := newMockHandlerFactory(nil, usecase)
+		usecase *BankStatementMock
+		assert  = require.New(t)
+	)
 
-	router := newRouter(factory)
+	{
+		req = httptest.NewRequest(
+			http.MethodGet,
+			fmt.Sprintf("/api/bank/%v/statement", clientID),
+			nil)
+		rec = httptest.NewRecorder()
+
+		ctxFac = func(c echo.Context) ProviderContext {
+			var ctx ProviderContext
+
+			usecase = &BankStatementMock{
+				RunFunc: func(id string) (*model.Statement, error) {
+					return sampleStatement(), nil
+				},
+			}
+
+			sttRepoFac := &StatementViewRepositoryFactoryMock{
+				CreateStatementViewRepositoryFunc: func() model.StatementViewRepository { return nil },
+			}
+
+			sttFac := &BankStatementFactoryMock{
+				CreateBankStatementFunc: func(repo model.StatementViewRepository) model.BankStatement { return usecase },
+			}
+
+			ctx = newMoqProviderContext(c, nil, nil, sttFac, sttRepoFac)
+
+			return ctx
+		}
+
+		router = newRouter(ctxFac)
+	}
+
 	router.ServeHTTP(rec, req)
 
 	assert.Equal(http.StatusOK, rec.Code)
 	assert.Equal(expectedBankStatement, rec.Body.String())
+	assert.Condition(func() bool { return len(usecase.RunCalls()) == 1 }, "bank statement usecase expected to be called once")
+	assert.Equal(clientID, usecase.RunCalls()[0].ID)
 }
 
-func Test_create_default_handler_factory(t *testing.T) {
-	var (
-		accountRepositoryFactory       model.AccountRepositoryFactory
-		statementViewRepositoryFactory model.StatementViewRepositoryFactory
-	)
-	newDefaultHandlerFactory(accountRepositoryFactory, statementViewRepositoryFactory)
+type moqProviderContext struct {
+	model.AccountRepositoryFactory
+	model.StatementViewRepositoryFactory
+	model.HandleTransactionFactory
+	model.BankStatementFactory
+
+	echo.Context
 }
 
-type mockHandlerFactory struct {
-	handleTransactionUsecase model.HandleTransaction
-	bankStatementUsecase     model.BankStatement
-}
-
-func newMockHandlerFactory(
-	handleTransactionUsecase model.HandleTransaction,
-	bankStatementUsecase model.BankStatement) *mockHandlerFactory {
-	return &mockHandlerFactory{
-		handleTransactionUsecase: handleTransactionUsecase,
-		bankStatementUsecase:     bankStatementUsecase,
+func newMoqProviderContext(
+	c echo.Context,
+	txFac model.HandleTransactionFactory,
+	accRepoFac model.AccountRepositoryFactory,
+	sttFac model.BankStatementFactory,
+	sttRepoFac model.StatementViewRepositoryFactory) ProviderContext {
+	res := &moqProviderContext{
+		Context:                        c,
+		HandleTransactionFactory:       txFac,
+		AccountRepositoryFactory:       accRepoFac,
+		BankStatementFactory:           sttFac,
+		StatementViewRepositoryFactory: sttRepoFac,
 	}
-}
 
-func (fac *mockHandlerFactory) createTransactionCommandHandler() *transactionCommandHandler {
-	return newTransactionCommandHandler(fac.handleTransactionUsecase)
-}
-
-func (fac *mockHandlerFactory) createStatementHandler() *statementHandler {
-	return newStatementHandler(fac.bankStatementUsecase)
+	return res
 }
 
 func sampleStatement() *model.Statement {
