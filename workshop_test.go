@@ -1,7 +1,6 @@
 package workshop_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/dc0d/workshop"
@@ -9,40 +8,123 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-func Test_calculate_fibonacci_sequence(t *testing.T) {
-	type (
-		expectation struct {
-			input          int
-			expectedOutput int
-		}
-	)
+var _ *assert.Assertions
 
+func TestSpeedOfEuropeanParrot(t *testing.T) {
 	var (
-		expectations = []expectation{
-			{1, 1},
-			{2, 1},
-			{3, 2},
-			{4, 3},
-			{10, 55},
-			{12, 144},
-			{20, 6765},
-		}
+		parrot workshop.Parrot
+
+		assert = assert.New(t)
 	)
 
-	for _, exp := range expectations {
-		var (
-			input          = exp.input
-			expectedOutput = exp.expectedOutput
-		)
-
-		t.Run(fmt.Sprintf("finding %dth fibonacci number", input), func(t *testing.T) {
-			var (
-				assert = assert.New(t)
-			)
-
-			output := workshop.Fib(input)
-
-			assert.Equal(expectedOutput, output)
-		})
+	{
+		parrot = workshop.CreateParrot(workshop.TypeEuropean, 0, 0, false)
 	}
+
+	speed, err := parrot.Speed()
+
+	assert.Equal(12.0, speed)
+	assert.NoError(err)
+}
+
+func TestSpeedOfAfricanParrot_With_One_Coconut(t *testing.T) {
+	var (
+		parrot workshop.Parrot
+
+		assert = assert.New(t)
+	)
+
+	{
+		parrot = workshop.CreateParrot(workshop.TypeAfrican, 1, 0, false)
+	}
+
+	speed, err := parrot.Speed()
+
+	assert.Equal(3.0, speed)
+	assert.NoError(err)
+}
+
+func TestSpeedOfAfricanParrot_With_Two_Coconuts(t *testing.T) {
+	var (
+		parrot workshop.Parrot
+
+		assert = assert.New(t)
+	)
+
+	{
+		parrot = workshop.CreateParrot(workshop.TypeAfrican, 2, 0, false)
+	}
+
+	speed, err := parrot.Speed()
+
+	assert.Equal(0.0, speed)
+	assert.NoError(err)
+}
+
+func TestSpeedOfAfricanParrot_With_No_Coconuts(t *testing.T) {
+	var (
+		parrot workshop.Parrot
+
+		assert = assert.New(t)
+	)
+
+	{
+		parrot = workshop.CreateParrot(workshop.TypeAfrican, 0, 0, false)
+	}
+
+	speed, err := parrot.Speed()
+
+	assert.Equal(12.0, speed)
+	assert.NoError(err)
+}
+
+func TestSpeedNorwegianBlueParrot_nailed(t *testing.T) {
+	var (
+		parrot workshop.Parrot
+
+		assert = assert.New(t)
+	)
+
+	{
+		parrot = workshop.CreateParrot(workshop.TypeNorwegianBlue, 0, 1.5, true)
+	}
+
+	speed, err := parrot.Speed()
+
+	assert.Equal(0.0, speed)
+	assert.NoError(err)
+}
+
+func TestSpeedNorwegianBlueParrot_not_nailed(t *testing.T) {
+	var (
+		parrot workshop.Parrot
+
+		assert = assert.New(t)
+	)
+
+	{
+		parrot = workshop.CreateParrot(workshop.TypeNorwegianBlue, 0, 1.5, false)
+	}
+
+	speed, err := parrot.Speed()
+
+	assert.Equal(18.0, speed)
+	assert.NoError(err)
+}
+
+func TestSpeedNorwegianBlueParrot_not_nailed_high_voltage(t *testing.T) {
+	var (
+		parrot workshop.Parrot
+
+		assert = assert.New(t)
+	)
+
+	{
+		parrot = workshop.CreateParrot(workshop.TypeNorwegianBlue, 0, 4, false)
+	}
+
+	speed, err := parrot.Speed()
+
+	assert.Equal(24.0, speed)
+	assert.NoError(err)
 }
