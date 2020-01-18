@@ -15,4 +15,3 @@ Personal workshops /
 - [Roman Numerals Kata in Elixir - Employing Recursion](https://github.com/dc0d/workshop/tree/elixir_roman_numerals_kata)
 - [Roman Numerals Kata in Elixir - Employing Streams](https://github.com/dc0d/workshop/tree/elixir_prime_factors_kata_using_streams)
 - [Parrot Refactoring Kata in Go](https://github.com/dc0d/workshop/tree/go_parrot_refactoring_kata)
-- [Sales Taxes Kata in Elixir](https://github.com/dc0d/workshop/tree/elixir_sales_taxes_kata)
