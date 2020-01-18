@@ -1,31 +1,14 @@
-# A TDD Workflow; TCR
+# [Mars Rover Kata](https://www.youtube.com/watch?v=24vzFAvOzo0)
 
-Source: [test && commit || revert](https://medium.com/@kentbeck_7670/test-commit-revert-870bbd756864)
+Goal here was I was trying to practice classicist TDD style more.
 
-To start the tcr loop:
+## Rules
 
-```
-$ . ./tcr.sh
-```
-
-The test command that is running (inside `./scripts/test.sh`) is:
-
-```
-$ go test -v -count=1 -timeout 10s ./...
-```
-
-It is possible to adapt this to your style.
-
-A build step is added to make sure the code is valid before running the TCR part - so here it's `build && (test && commit || revert)`.
-
-The test code will not be reverted. Only the code will be reverted - in case it fails to fulfil the expectations (tests).
-
-Each successful change will be committed with a `WIP` message. So it's better to work in a local branch and then rebase or merge/squash.
-
-# Traditional TDD
-
-Still sometimes I find myself to fall back to traditional TDD. For such occasions, it's possible to run just the tests using:
-
-```
-$ . ./watch-test.sh
-```
+1. Initial starting point for a rover is 0,0,N (coordination is 0,0 and heading North)
+2. The grid size id 10,10
+3. Directions are N, E, S and W
+4. L and R commands mean rotating Left and Right
+5. Command M means Move (in current direction)
+6. Rover receives a list of commands like "RMMLM" and returns final position like 2:1:N
+7. Rover wraps around if reaches the end of the grid
+8. The grid may have obstacles. If the sequence on commands end up in an obstacle, the rover moves to last possible coordinate and reports the obstacle Put an O (not a zero) at the beginning O:2:2:N
