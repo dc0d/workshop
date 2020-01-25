@@ -1,9 +1,21 @@
 package workshop
 
-func Fib(n int) (fib int) {
-	for a, b := 1, 1; n > 0; a, b, n = b, a+b, n-1 {
-		fib = a
+func IsLeapYear(aYear int) bool {
+	y := year(aYear)
+
+	return y.isLeap()
+}
+
+type year int
+
+func (y year) isLeap() bool {
+	if y%400 == 0 {
+		return true
 	}
 
-	return
+	if y%4 == 0 && y%100 != 0 {
+		return true
+	}
+
+	return false
 }

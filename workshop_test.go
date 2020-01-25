@@ -1,7 +1,6 @@
 package workshop_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/dc0d/workshop"
@@ -9,40 +8,46 @@ import (
 	assert "github.com/stretchr/testify/require"
 )
 
-func Test_calculate_fibonacci_sequence(t *testing.T) {
-	type (
-		expectation struct {
-			input          int
-			expectedOutput int
-		}
-	)
-
+func Test_a_typical_common_year(t *testing.T) {
 	var (
-		expectations = []expectation{
-			{1, 1},
-			{2, 1},
-			{3, 2},
-			{4, 3},
-			{10, 55},
-			{12, 144},
-			{20, 6765},
-		}
+		year       = 2001
+		isLeapYear = false
+
+		assert = assert.New(t)
 	)
 
-	for _, exp := range expectations {
-		var (
-			input          = exp.input
-			expectedOutput = exp.expectedOutput
-		)
+	assert.Equal(isLeapYear, workshop.IsLeapYear(year))
+}
 
-		t.Run(fmt.Sprintf("finding %dth fibonacci number", input), func(t *testing.T) {
-			var (
-				assert = assert.New(t)
-			)
+func Test_a_typical_leap_year(t *testing.T) {
+	var (
+		year       = 1996
+		isLeapYear = true
 
-			output := workshop.Fib(input)
+		assert = assert.New(t)
+	)
 
-			assert.Equal(expectedOutput, output)
-		})
-	}
+	assert.Equal(isLeapYear, workshop.IsLeapYear(year))
+}
+
+func Test_a_atypical_common_year(t *testing.T) {
+	var (
+		year       = 1900
+		isLeapYear = false
+
+		assert = assert.New(t)
+	)
+
+	assert.Equal(isLeapYear, workshop.IsLeapYear(year))
+}
+
+func Test_a_atypical_leap_year(t *testing.T) {
+	var (
+		year       = 2000
+		isLeapYear = true
+
+		assert = assert.New(t)
+	)
+
+	assert.Equal(isLeapYear, workshop.IsLeapYear(year))
 }
