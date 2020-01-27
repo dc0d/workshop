@@ -16,3 +16,4 @@ Personal workshops /
 - [Roman Numerals Kata in Elixir - Employing Streams](https://github.com/dc0d/workshop/tree/elixir_prime_factors_kata_using_streams)
 - [Parrot Refactoring Kata in Go](https://github.com/dc0d/workshop/tree/go_parrot_refactoring_kata)
 - [Mars Rover Kata in Go](https://github.com/dc0d/workshop/tree/go_mars_rover)
+- [Gossiping Bus Drivers Kata in Go](https://github.com/dc0d/workshop/tree/go_gossiping_bus_drivers_kata)
