@@ -1,5 +1,16 @@
 # Test
 
+## Tools
+
+`moq` (for generating Mocks) and `wire` (for Dependency Injection) must be present. To get them:
+
+```
+$ go get -u -v github.com/google/wire/cmd/wire
+$ go get -u -v github.com/matryer/moq
+```
+
+## Run The Tests
+
 To run all tests:
 
 ```
