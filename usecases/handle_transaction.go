@@ -4,15 +4,15 @@ import (
 	model "github.com/dc0d/workshop/domain_model"
 )
 
-type handleTransaction struct {
+type HandleTransaction struct {
 	repo model.AccountRepository
 }
 
-func NewHandleTransaction(repo model.AccountRepository) model.HandleTransaction {
-	return &handleTransaction{repo: repo}
+func NewHandleTransaction(repo model.AccountRepository) *HandleTransaction {
+	return &HandleTransaction{repo: repo}
 }
 
-func (usecase *handleTransaction) Run(option model.HandleTransactionOption) error {
+func (usecase *HandleTransaction) Run(option model.HandleTransactionOption) error {
 	var (
 		clientID string
 		options  model.HandleTransactionOptions

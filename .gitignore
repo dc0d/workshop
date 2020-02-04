@@ -1,2 +1,7 @@
 /docker-data/
 *.1
+
+/_build/
+/cover/
+/.elixir_ls/
+/deps/

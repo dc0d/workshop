@@ -4,15 +4,15 @@ import (
 	model "github.com/dc0d/workshop/domain_model"
 )
 
-type bankStatement struct {
+type BankStatement struct {
 	repo model.StatementViewRepository
 }
 
-func NewBankStatement(repo model.StatementViewRepository) model.BankStatement {
-	return &bankStatement{repo: repo}
+func NewBankStatement(repo model.StatementViewRepository) *BankStatement {
+	return &BankStatement{repo: repo}
 }
 
-func (usecase *bankStatement) Run(id string) (*model.Statement, error) {
+func (usecase *BankStatement) Run(id string) (*model.Statement, error) {
 	statement, err := usecase.repo.Find(id)
 	if err != nil {
 		return nil, err

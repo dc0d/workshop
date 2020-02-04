@@ -23,8 +23,6 @@ func Test_transaction_command_handler_using_the_router(t *testing.T) {
 		commandPayload []byte
 		opt            model.HandleTransactionOptions
 
-		ctxFac ProviderContextFactory
-
 		req    *http.Request
 		rec    *httptest.ResponseRecorder
 		router *echo.Echo
@@ -47,9 +45,7 @@ func Test_transaction_command_handler_using_the_router(t *testing.T) {
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		rec = httptest.NewRecorder()
 
-		ctxFac = func(c echo.Context) ProviderContext {
-			var ctx ProviderContext
-
+		InjectTransactionCommandHandler = func() *TransactionCommandHandler {
 			usecase = &HandleTransactionMock{
 				RunFunc: func(option model.HandleTransactionOption) error {
 					option(&opt)
@@ -58,20 +54,10 @@ func Test_transaction_command_handler_using_the_router(t *testing.T) {
 				},
 			}
 
-			txFac := &HandleTransactionFactoryMock{
-				CreateHandleTransactionFunc: func(model.AccountRepository) model.HandleTransaction { return usecase },
-			}
-
-			accRepoFac := &AccountRepositoryFactoryMock{
-				CreateAccountRepositoryFunc: func() model.AccountRepository { return nil },
-			}
-
-			ctx = newMoqProviderContext(c, txFac, accRepoFac, nil, nil)
-
-			return ctx
+			return NewTransactionCommandHandler(usecase)
 		}
 
-		router = newRouter(ctxFac)
+		router = newRouter()
 	}
 
 	router.ServeHTTP(rec, req)
@@ -88,8 +74,6 @@ func Test_bank_statement_using_the_router(t *testing.T) {
 	var (
 		clientID = "A_CLIENT_ID"
 
-		ctxFac ProviderContextFactory
-
 		req    *http.Request
 		rec    *httptest.ResponseRecorder
 		router *echo.Echo
@@ -105,29 +89,17 @@ func Test_bank_statement_using_the_router(t *testing.T) {
 			nil)
 		rec = httptest.NewRecorder()
 
-		ctxFac = func(c echo.Context) ProviderContext {
-			var ctx ProviderContext
-
+		InjectStatementHandler = func() *StatementHandler {
 			usecase = &BankStatementMock{
 				RunFunc: func(id string) (*model.Statement, error) {
 					return sampleStatement(), nil
 				},
 			}
 
-			sttRepoFac := &StatementViewRepositoryFactoryMock{
-				CreateStatementViewRepositoryFunc: func() model.StatementViewRepository { return nil },
-			}
-
-			sttFac := &BankStatementFactoryMock{
-				CreateBankStatementFunc: func(repo model.StatementViewRepository) model.BankStatement { return usecase },
-			}
-
-			ctx = newMoqProviderContext(c, nil, nil, sttFac, sttRepoFac)
-
-			return ctx
+			return NewStatementHandler(usecase)
 		}
 
-		router = newRouter(ctxFac)
+		router = newRouter()
 	}
 
 	router.ServeHTTP(rec, req)
@@ -136,32 +108,6 @@ func Test_bank_statement_using_the_router(t *testing.T) {
 	assert.Equal(expectedBankStatement, rec.Body.String())
 	assert.Condition(func() bool { return len(usecase.RunCalls()) == 1 }, "bank statement usecase expected to be called once")
 	assert.Equal(clientID, usecase.RunCalls()[0].ID)
-}
-
-type moqProviderContext struct {
-	model.AccountRepositoryFactory
-	model.StatementViewRepositoryFactory
-	model.HandleTransactionFactory
-	model.BankStatementFactory
-
-	echo.Context
-}
-
-func newMoqProviderContext(
-	c echo.Context,
-	txFac model.HandleTransactionFactory,
-	accRepoFac model.AccountRepositoryFactory,
-	sttFac model.BankStatementFactory,
-	sttRepoFac model.StatementViewRepositoryFactory) ProviderContext {
-	res := &moqProviderContext{
-		Context:                        c,
-		HandleTransactionFactory:       txFac,
-		AccountRepositoryFactory:       accRepoFac,
-		BankStatementFactory:           sttFac,
-		StatementViewRepositoryFactory: sttRepoFac,
-	}
-
-	return res
 }
 
 func sampleStatement() *model.Statement {

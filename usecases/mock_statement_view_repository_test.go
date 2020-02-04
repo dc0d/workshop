@@ -4,7 +4,7 @@
 package usecases_test
 
 import (
-	model "github.com/dc0d/workshop/domain_model"
+	"github.com/dc0d/workshop/domain_model"
 	"sync"
 )
 

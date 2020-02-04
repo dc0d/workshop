@@ -4,8 +4,8 @@
 package repositories_test
 
 import (
+	"github.com/dc0d/workshop/domain_model"
 	"github.com/dc0d/workshop/interface_adapters/repositories"
-	model "github.com/dc0d/workshop/domain_model"
 	"sync"
 )
 

@@ -5,19 +5,19 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/labstack/echo/v4"
 	model "github.com/dc0d/workshop/domain_model"
+	"github.com/labstack/echo/v4"
 )
 
-type transactionCommandHandler struct {
+type TransactionCommandHandler struct {
 	usecase model.HandleTransaction
 }
 
-func newTransactionCommandHandler(usecase model.HandleTransaction) *transactionCommandHandler {
-	return &transactionCommandHandler{usecase: usecase}
+func NewTransactionCommandHandler(usecase model.HandleTransaction) *TransactionCommandHandler {
+	return &TransactionCommandHandler{usecase: usecase}
 }
 
-func (h *transactionCommandHandler) handleCommand(c echo.Context) error {
+func (h *TransactionCommandHandler) handleCommand(c echo.Context) error {
 	var command transactionCommand
 	if err := c.Bind(&command); err != nil {
 		return err

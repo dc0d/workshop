@@ -8,15 +8,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type statementHandler struct {
+type StatementHandler struct {
 	usecase model.BankStatement
 }
 
-func newStatementHandler(usecase model.BankStatement) *statementHandler {
-	return &statementHandler{usecase: usecase}
+func NewStatementHandler(usecase model.BankStatement) *StatementHandler {
+	return &StatementHandler{usecase: usecase}
 }
 
-func (h *statementHandler) getStatement(c echo.Context) error {
+func (h *StatementHandler) getStatement(c echo.Context) error {
 	statement, err := h.usecase.Run(c.Param("client_id"))
 	if err != nil {
 		return err
