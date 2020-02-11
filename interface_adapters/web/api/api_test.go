@@ -45,7 +45,7 @@ func Test_transaction_command_handler_using_the_router(t *testing.T) {
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		rec = httptest.NewRecorder()
 
-		InjectTransactionCommandHandler = func() *TransactionCommandHandler {
+		InjectTransactionCommandHandler := func() *TransactionCommandHandler {
 			usecase = &HandleTransactionMock{
 				RunFunc: func(option model.HandleTransactionOption) error {
 					option(&opt)
@@ -57,7 +57,7 @@ func Test_transaction_command_handler_using_the_router(t *testing.T) {
 			return NewTransactionCommandHandler(usecase)
 		}
 
-		router = newRouter()
+		router = NewRouter(InjectorSet{InjectTransactionCommandHandler: InjectTransactionCommandHandler})
 	}
 
 	router.ServeHTTP(rec, req)
@@ -89,7 +89,7 @@ func Test_bank_statement_using_the_router(t *testing.T) {
 			nil)
 		rec = httptest.NewRecorder()
 
-		InjectStatementHandler = func() *StatementHandler {
+		InjectStatementHandler := func() *StatementHandler {
 			usecase = &BankStatementMock{
 				RunFunc: func(id string) (*model.Statement, error) {
 					return sampleStatement(), nil
@@ -99,7 +99,7 @@ func Test_bank_statement_using_the_router(t *testing.T) {
 			return NewStatementHandler(usecase)
 		}
 
-		router = newRouter()
+		router = NewRouter(InjectorSet{InjectStatementHandler: InjectStatementHandler})
 	}
 
 	router.ServeHTTP(rec, req)

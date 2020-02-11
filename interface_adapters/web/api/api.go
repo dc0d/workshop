@@ -8,11 +8,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func NewRouter() *echo.Echo {
-	return newRouter()
-}
-
-func newRouter() *echo.Echo {
+func NewRouter(injectors InjectorSet) *echo.Echo {
 	router := echo.New()
 
 	router.Use(middleware.Recover())
@@ -21,13 +17,13 @@ func newRouter() *echo.Echo {
 		bankAPI := router.Group("/api/bank")
 
 		bankAPI.POST("/transactions", func(c echo.Context) error {
-			handler := InjectTransactionCommandHandler()
+			handler := injectors.InjectTransactionCommandHandler()
 
 			return handler.handleCommand(c)
 		})
 
 		bankAPI.GET("/:client_id/statement", func(c echo.Context) error {
-			handler := InjectStatementHandler()
+			handler := injectors.InjectStatementHandler()
 
 			return handler.getStatement(c)
 		})
@@ -36,7 +32,7 @@ func newRouter() *echo.Echo {
 	return router
 }
 
-var (
+type InjectorSet struct {
 	InjectStatementHandler          func() *StatementHandler
 	InjectTransactionCommandHandler func() *TransactionCommandHandler
-)
+}

@@ -8,10 +8,12 @@ import (
 )
 
 func Start() {
-	api.InjectStatementHandler = injectStatementHandler
-	api.InjectTransactionCommandHandler = injectTransactionCommandHandler
+	apiInjectors := api.InjectorSet{
+		InjectStatementHandler:          injectStatementHandler,
+		InjectTransactionCommandHandler: injectTransactionCommandHandler,
+	}
 
-	router := api.NewRouter()
+	router := api.NewRouter(apiInjectors)
 
 	s := newServer()
 	router.Logger.Fatal(router.StartServer(s))
