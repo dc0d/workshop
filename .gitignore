@@ -1,2 +1,6 @@
 /_build/
 /cover/
+
+/.nyc_output/
+/coverage/
+/node_modules/
