@@ -35,6 +35,18 @@ func TestUpdateQuality(t *testing.T) {
 			{
 				inputItem: workshop.Item{Name: "", SellIn: -1, Quality: 2},
 			},
+			{
+				inputItem: workshop.Item{Name: "Aged Brie", SellIn: 0, Quality: 0},
+			},
+			{
+				inputItem: workshop.Item{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 10, Quality: 0},
+			},
+			{
+				inputItem: workshop.Item{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: 5, Quality: 0},
+			},
+			{
+				inputItem: workshop.Item{Name: "Backstage passes to a TAFKAL80ETC concert", SellIn: -1, Quality: 0},
+			},
 		}
 	)
 
