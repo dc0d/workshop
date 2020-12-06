@@ -67,6 +67,17 @@ func TestUpdateQuality(t *testing.T) {
 	}
 }
 
+func TestUpdateQuality_sulfuras_hand_of_ragnaros(t *testing.T) {
+	inputItem := workshop.Item{Name: "Sulfuras, Hand of Ragnaros", SellIn: -1, Quality: 0}
+	expectedOutput := workshop.Item{Name: "Sulfuras, Hand of Ragnaros", SellIn: -1, Quality: 0}
+
+	input := []*workshop.Item{&inputItem}
+	workshop.UpdateQuality(input)
+
+	actualOutput := inputItem
+	assert.Equal(t, expectedOutput, actualOutput)
+}
+
 func getExpectedOutput(t *testing.T, fixtureFile string, item workshop.Item) (expectedOutput workshop.Item) {
 	js, err := readFile(fixtureFile)
 	if err != nil {
