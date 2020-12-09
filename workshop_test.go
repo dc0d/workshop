@@ -17,12 +17,16 @@ import (
 
 func TestUpdateQuality(t *testing.T) {
 	var (
-		testCases = []Item{
-			{name: "", sellIn: -10, quality: 0},
-			{name: "nonexistent", sellIn: 0, quality: 0},
-			{name: "", sellIn: 0, quality: 50},
-		}
+		testCases []Item
 	)
+
+	for _, name := range []string{"", "nonexistent", "Aged Brie", "Backstage passes to a TAFKAL80ETC concert", "Sulfuras, Hand of Ragnaros"} {
+		for _, quality := range []int{0, 1, 49, 50} {
+			for _, sellIn := range []int{-1, 0, 5, 6, 10, 11} {
+				testCases = append(testCases, Item{name: name, sellIn: sellIn, quality: quality})
+			}
+		}
+	}
 
 	for index, testCase := range testCases {
 		var (
