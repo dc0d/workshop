@@ -1,3 +1,3 @@
-# workshop
+# Gilded Rose Kata
 
-Personal workshops /
+Source: [Gilded Rose Kata](https://github.com/emilybache/GildedRose-Refactoring-Kata)
