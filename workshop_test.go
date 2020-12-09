@@ -7,12 +7,38 @@ import (
 )
 
 func TestUpdateQuality(t *testing.T) {
-	inputItem := Item{name: "", sellIn: 0, quality: 0}
-	expectedOutput := Item{name: "", sellIn: -1, quality: 0}
+	type testCase struct {
+		inputItem      Item
+		expectedOutput Item
+	}
 
-	input := []*Item{&inputItem}
-	UpdateQuality(input)
+	var (
+		testCases = []testCase{
+			{
+				inputItem:      Item{name: "", sellIn: 0, quality: 0},
+				expectedOutput: Item{name: "", sellIn: -1, quality: 0},
+			},
+			{
+				inputItem:      Item{name: "nonexistent", sellIn: 0, quality: 0},
+				expectedOutput: Item{name: "nonexistent", sellIn: -1, quality: 0},
+			},
+			{
+				inputItem:      Item{name: "", sellIn: 0, quality: 1},
+				expectedOutput: Item{name: "", sellIn: -1, quality: 0},
+			},
+		}
+	)
 
-	actualOutput := inputItem
-	assert.Equal(t, expectedOutput, actualOutput)
+	for _, testCase := range testCases {
+		var (
+			inputItem      = testCase.inputItem
+			expectedOutput = testCase.expectedOutput
+		)
+
+		input := []*Item{&inputItem}
+		UpdateQuality(input)
+
+		actualOutput := inputItem
+		assert.Equal(t, expectedOutput, actualOutput)
+	}
 }
