@@ -6,7 +6,7 @@ import (
 
 	"github.com/dc0d/workshop"
 
-	assert "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_calculate_fibonacci_sequence(t *testing.T) {
@@ -36,13 +36,9 @@ func Test_calculate_fibonacci_sequence(t *testing.T) {
 		)
 
 		t.Run(fmt.Sprintf("finding %dth fibonacci number", input), func(t *testing.T) {
-			var (
-				assert = assert.New(t)
-			)
-
 			output := workshop.Fib(input)
 
-			assert.Equal(expectedOutput, output)
+			require.Equal(t, expectedOutput, output)
 		})
 	}
 }
