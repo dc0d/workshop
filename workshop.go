@@ -1,9 +1,13 @@
 package workshop
 
-func Fib(n int) (fib int) {
-	for a, b := 1, 1; n > 0; a, b, n = b, a+b, n-1 {
-		fib = a
-	}
+var (
+	ErrFieldTaken          sentinelError = "field is taken"
+	ErrFieldInvalid        sentinelError = "field is invalid"
+	ErrPlayerInvalid       sentinelError = "player is invalid"
+	ErrPlayerAlreadyPlayed sentinelError = "player already played"
+	ErrGameOver            sentinelError = "game over"
+)
 
-	return
-}
+type sentinelError string
+
+func (se sentinelError) Error() string { return string(se) }

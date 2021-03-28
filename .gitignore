@@ -4,3 +4,6 @@
 /.nyc_output/
 /coverage/
 /node_modules/
+
+all-coverage.html
+all-profile.out
